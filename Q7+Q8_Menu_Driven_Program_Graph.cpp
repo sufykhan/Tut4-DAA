@@ -146,5 +146,17 @@ int main()
             int x,y;cin>>x>>y;
             one.addEdge(x,y,type);
     }
-       
+
+    
+    //Q7//
+    //{
+    // addEdge(int u,int v,int type);
+    // printDFS();
+    // printBFS();
+    // checkCycleUndirected();
+    // checkCycleDirected();
+    //}
+  
+    // Q8 // printDFS_with_stack();
+
 }
