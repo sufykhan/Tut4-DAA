@@ -1,168 +1,3 @@
-// #include <bits/stdc++.h>
-
-// using namespace std;
-
-
-// class Graph{
-//     int V;
-//     list<int>*adj;
-//     void DFS(vector<bool>&vis,int src);
-//     void BFS(vector<bool>&vis,int src);
-
-//     public:
-//     Graph(int V);
-//     ~Graph();
-//     void addEdge(int u,int v,int type);
-//     void printDFS();
-//     void printBFS();
-//     void printDFS_with_stack();
-//     void checkCycleUndirected();
-//     void checkCycleDirected();
-
-// };
-
-
-// Graph::Graph(int V){
-//     this->V=V;
-//     this->adj=new list<int>[V];
-// }
-// Graph::~Graph(){
-//     delete[] this->adj;
-// }
-// void Graph::addEdge(int u,int v,int type){
-//     adj[u].push_back(v);
-//     if(type==1) adj[v].push_back(u);
-// }
-// void Graph::DFS(vector<bool>&visited,int src){
-//     visited[src]=true;
-//     cout<<src<<" ";
-
-//     for(auto x:adj[src]){
-//         if(!visited[x]){
-//             DFS(visited,x);
-//         }
-//     }
-// }
-// void Graph::printDFS_with_stack(){
-//     vector<bool>visited(V,false);
-//     for(int i=0;i<V;i++){
-//         if(visited[i]){
-//             continue;
-//         }
-//         stack<int>s;
-//         s.push(i);  //source node 0 by default
-//         while(!s.empty()){
-//             int val=s.top();
-//             s.pop();
-//             if( !visited[val]) {cout<<val<<" ";visited[val]=true;}
-//             for(auto x:adj[val]){
-//                 if(!visited[x]){
-//                     s.push(x);
-//                 }
-//             }
-//         }
-//     }
-    
-// }
-// void Graph::printDFS(){
-//     vector<bool>vis(V,false);
-//     int cnt=0;
-//     for(int i=0;i<V;i++){
-//         if(!vis[i]){
-//             cout<<cnt<<"-->";
-//             DFS(vis,i);
-//             cnt++;
-//             cout<<"\n";
-//         }
-//     }
-// }
-// void Graph::printBFS(){
-//     vector<bool>vis(V,false);
-//     for(int i=0;i<V;i++){
-//         if(!vis[i]){
-//              BFS(vis,i);
-//         }
-//     }
-   
-// }
-
-// void Graph::BFS(vector<bool>&visited,int src){
-//     visited[src]=true;
-//     queue<vector<int>>q;
-//     vector<int>xx={src,0};
-//     q.push(xx);
-//     while(!q.empty()){
-//         vector<int>parent=q.front();
-//         q.pop();
-//         cout<<parent[0]<<" --> level: "<<parent[1]<<"\n";
-//         for(auto x:adj[parent[0]]){
-//             if(!visited[x]){
-//                 visited[x]=true;
-//                 q.push({x,parent[1]+1});
-//             }
-//         }
-//     }
-// }
-
-// void Graph::checkCycleUndirected(){
-//     vector<bool>visited(V,false);
-//     vector<int>parent(V,INT_MAX);
-//     for(int i=0;i<V;i++){
-//         if(!visited[i]){
-//            stack<int>s;
-//            s.push(i);
-//            while(!s.empty()){
-//                int val=s.top();
-//                s.pop();
-//                for(auto x:adj[val]){
-//                    if(visited[x]){
-//                        if(parent[x]!=val){
-//                             cout<<"Cycle found\n";
-//                             return;
-//                        }
-//                    }
-//                    else{
-//                        parent[x]=val;
-//                        visited[x]=true;
-//                    }
-//                }
-//            }
-//         }
-//     }
-//     cout<<"Graph is Acyclic\n";    
-// }
-
-// int main()
-// {
-//     cout<<"Select the type of Graph\n";
-//     cout<<"Press 1 for undirected graph\n";
-//     cout<<"Press 2 for directed graph\n";
-    
-//     int type;cin>>type;
-    
-//     int n;cin>>n;
-//     Graph one(n);
-//     int edge;cin>>edge;
-//     for(int i=0;i<edge;i++){
-//             int x,y;cin>>x>>y;
-//             one.addEdge(x,y,type);
-//     }
-
-    
-//     //Q7//
-//     //{
-//     // addEdge(int u,int v,int type);
-//     // printDFS();
-//     // printBFS();
-//     // checkCycleUndirected();
-//     // checkCycleDirected();
-//     //}
-  
-//     // Q8 // printDFS_with_stack();
-
-// }
-
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -242,7 +77,79 @@ void BFS(vector<vector<int>>adj){
    
 }
 
+bool isCyclicUtil(int v, vector<bool>&visited, vector<bool>&recStack,vector<vector<int>>adj)
+{
+    if(visited[v] == false)
+    {
+        visited[v] = true;
+        recStack[v] = true;
+ 
+     
+        for(int i=0;i<adj[v].size();i++)
+        {
+            int xx=adj[v][i]; 
+            
+            if ( !visited[xx] && isCyclicUtil(xx, visited, recStack,adj) )
+                return true;
+            else if (recStack[xx])
+                return true;
+        }
+ 
+    }
+    recStack[v] = false;
+    
+    return false;
+}
 
+
+
+bool isCyclicDirected(vector<vector<int>>adj)
+{
+    int V=adj.size();
+    
+    vector<bool>visited(V,false);
+    vector<bool>recStack(V,false);
+ 
+    for(int i = 0; i < V; i++)
+        if ( !visited[i] && isCyclicUtil(i, visited, recStack,adj))
+            return true;
+ 
+    return false;
+}
+
+bool isCU(int v,vector<bool>&visited, int parent,vector<vector<int>>adj)
+{
+    visited[v] = true;
+    for (int i=0;i<adj[v].size();i++)
+    {
+        int xx=adj[v][i];
+        if (!visited[xx])
+        {
+           if (isCU(xx, visited, v,adj))
+              return true;
+        }
+        else if (xx != parent)
+           return true;
+    }
+    return false;
+}
+ 
+
+bool isCyclicUndirected(vector<vector<int>>adj)
+{
+    int V=adj.size();
+     
+    vector<bool>visited(V,false);
+ 
+    for (int u = 0; u < V; u++)
+    {
+        if (!visited[u])
+          if (isCU(u, visited, -1,adj))
+             return true;
+    }
+    return false;
+}
+ 
 
 
 int main(){
@@ -281,6 +188,16 @@ int main(){
         BFS(adj);
         cout<<"\n";
         
+        cout<<"\n";
+        
+        if(isCyclicDirected(adj)){
+            cout<<"CYCLE DETECTED\n";
+        }
+        else{
+            cout<<"NO CYCLE DETECTED\n";
+        }
+        
+        
     }
     else{
         for(int i=0;i<edges;i++){
@@ -288,7 +205,24 @@ int main(){
             adj[u].push_back(v);
             adj[v].push_back(u);
         }
+        cout<<"DFS for the GRAPH is AS Follows: =>";
+        DFS(adj,1);  //DFS STARTS FROM NODE 0
+        cout<<"\n";
+        
+        cout<<"BFS for the GRAPH is AS Follows: =>";
+        BFS(adj);
+        cout<<"\n";
+        
+        cout<<"\n";
+        if(isCyclicUndirected(adj)){
+            cout<<"CYCLE DETECTED\n";
+        }
+        else{
+            cout<<"NO CYCLE DETECTED\n";
+        }
     }
+    
+    cout<<"Q8  iterativeDFS \n ";
     
     DFS(adj,2);
     
