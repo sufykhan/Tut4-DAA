@@ -12,14 +12,15 @@ using namespace std;
 
 
 int main(){
-    int n,capacity;
+    int n;
+    double capacity;
     cout<<"Enter the value of n (Total number of weights):\n";
     cin>>n;
     cout<<"Enter the capacity of the Knapsack:\n ";
     cin>>capacity;
     
-    vector<int>weight(n);
-    vector<int>value(n);
+    vector<double>weight(n);
+    vector<double>value(n);
     
     cout<<"Enter the space separated weight array\n";
 
@@ -32,11 +33,14 @@ int main(){
     for(int i=0;i<n;i++){
         cin>>value[i];
     }
-    vector<pair<int,int>>arr(n);
+    vector<pair<double,double>>arr(n);
     for(int i=0;i<n;i++){
         arr[i]={weight[i],value[i]};
+        // double x=value[i]/weight[i];
+        // cout<<x<<" ";
     }
-    sort(arr.begin(),arr.end(),[] (pair<int,int>a,pair<int,int>b){
+    //cout<<"\n";
+    sort(arr.begin(),arr.end(),[] (pair<double,double>a,pair<double,double>b){
         double x=(double)a.second/double(a.first);
         double y=(double)b.second/double(b.first);
         return x>y;
