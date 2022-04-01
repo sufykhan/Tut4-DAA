@@ -1,0 +1,23 @@
+A strongly connected component is the portion of a directed graph
+in which there is a path from each vertex to another vertex.
+You can observe that in the strongly connected component,
+every vertex can reach the other vertex through the directed path.
+One of the important feature of the SCC is that if we reverse the
+edges of the graph , the SCC remains SCC . And this property can be used
+to find all the strongly connected components of a graph.
+
+The algoritm used here to get all SCC is Kosaraju Algorithm.
+
+In this Algorithm, we first run the DFS through graph and
+store the path in post order format in the stack.
+
+Now we need to reverse the graph and remember that SCC still remains SCC.
+Due to reversing the graph all the SCC gets disconnected.
+Now the point is that of how we traverse from one SCC to other, the answer is
+the previous stack we have created.
+
+We run the DFS again through the graph and remove all the visited nodes from stack.
+Once a single SCC is completed we again call DFS to top element of stack and do that
+again and again until stack is empty.
+
+Once the stack got empty we will get all the strongly connected component of the graph.

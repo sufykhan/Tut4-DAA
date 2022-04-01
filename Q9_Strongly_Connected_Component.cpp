@@ -1,103 +1,82 @@
-#include "bits/stdc++.h"
+//FOR THE MATTER OF CONVINIENCE , SAMPLE TEST CASE OF GRAPH IS PROVIDED , KEEPING THE ALGORTHM INTACT
+
+//KOSARAJU ALGORITHM
+
+#include<bits/stdc++.h>
 using namespace std;
+#define V 8
+#define pb push_back
 
-class Graph {
-  int V;
-  list<int> *adj;
-  void fillOrder(int s, bool visitedV[], stack<int> &Stack);
-  void DFS(int s, bool visitedV[]);
+unordered_map<int,vector<int>> adj,rev;
 
-   public:
-  Graph(int V);
-  void addEdge(int s, int d);
-  void printSCC();
-  Graph transpose();
-};
+void DFS1(int i,vector<bool>& visited,stack<int>& mystack)
+{
+	visited[i]=true;
+	for(int j: adj[i])
+		if(visited[j]==false)
+			DFS1(j,visited,mystack);
 
-Graph::Graph(int V) {
-  this->V = V;
-  adj = new list<int>[V];
+	mystack.push(i);
 }
 
-// DFS
-void Graph::DFS(int s, bool visitedV[]) {
-  visitedV[s] = true;
-  cout << s << " ";
-
-  list<int>::iterator i;
-  for (i = adj[s].begin(); i != adj[s].end(); ++i)
-    if (!visitedV[*i])
-      DFS(*i, visitedV);
+void reverse()
+{
+	for(int i=0;i<V;++i)
+	{
+		for(int j: adj[i])
+			rev[j].pb(i);
+	}
 }
 
-// Transpose
-Graph Graph::transpose() {
-  Graph g(V);
-  for (int s = 0; s < V; s++) {
-    list<int>::iterator i;
-    for (i = adj[s].begin(); i != adj[s].end(); ++i) {
-      g.adj[*i].push_back(s);
-    }
-  }
-  return g;
+void DFS2(int i,vector<bool>& visited)
+{
+	cout<<i<<" ";
+	visited[i] = true;
+	for(int j: rev[i])
+		if(!visited[j])
+			DFS2(j,visited);
 }
 
-// Add edge into the graph
-void Graph::addEdge(int s, int d) {
-  adj[s].push_back(d);
+void findSCCs()
+{
+	stack<int> mystack;
+
+	vector<bool> visited(V,false);
+	for(int i=0;i<V;++i)
+		if(!visited[i])
+			DFS1(i,visited,mystack);
+
+	reverse();
+
+	for(int i=0;i<V;++i)
+		visited[i] = false;
+
+	cout<<"Strongly Connected Components are:\n";
+	while(!mystack.empty())
+	{
+		int curr = mystack.top();
+		mystack.pop();
+		if(visited[curr]==false)
+		{
+			DFS2(curr,visited);
+			cout<<"\n";
+		}
+	}
 }
 
-void Graph::fillOrder(int s, bool visitedV[], stack<int> &Stack) {
-  visitedV[s] = true;
+int main()
+{
+	adj[0].pb(1);
+	adj[1].pb(2);
+	adj[2].pb(0);
+	adj[2].pb(3);
+	adj[3].pb(4);
+	adj[4].pb(5);
+	adj[4].pb(7);
+	adj[5].pb(6);
+	adj[6].pb(4);
+	adj[6].pb(7);
 
-  list<int>::iterator i;
-  for (i = adj[s].begin(); i != adj[s].end(); ++i)
-    if (!visitedV[*i])
-      fillOrder(*i, visitedV, Stack);
-
-  Stack.push(s);
-}
-
-// Print strongly connected component
-void Graph::printSCC() {
-  stack<int> Stack;
-
-  bool *visitedV = new bool[V];
-  for (int i = 0; i < V; i++)
-    visitedV[i] = false;
-
-  for (int i = 0; i < V; i++)
-    if (visitedV[i] == false)
-      fillOrder(i, visitedV, Stack);
-
-  Graph gr = transpose();
-
-  for (int i = 0; i < V; i++)
-    visitedV[i] = false;
-
-  while (Stack.empty() == false) {
-    int s = Stack.top();
-    Stack.pop();
-
-    if (visitedV[s] == false) {
-      gr.DFS(s, visitedV);
-      cout << endl;
-    }
-  }
-}
-
-int main() {
-  Graph g(8);
-  g.addEdge(0, 1);
-  g.addEdge(1, 2);
-  g.addEdge(2, 3);
-  g.addEdge(2, 4);
-  g.addEdge(3, 0);
-  g.addEdge(4, 5);
-  g.addEdge(5, 6);
-  g.addEdge(6, 4);
-  g.addEdge(6, 7);
-
-  cout << "Strongly Connected Components:\n";
-  g.printSCC();
+	findSCCs();
+	return 0;
 }

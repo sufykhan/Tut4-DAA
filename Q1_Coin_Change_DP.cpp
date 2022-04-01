@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+//BY USING DP METHOD
+
 //INPUT FORMAT
 // n target
 // array of size n 
@@ -9,11 +11,17 @@ using namespace std;
 // 8 3 4 2
 
 int main(){
-    int n,target;cin>>n>>target;
+     cout<<"Provide Total number of Coins : \n";
+    int n,target;cin>>n;
+    cout<<"Provide Target Value : \n";
+    cin>>target;
     vector<int>coins(n);
+
+    cout<<"Provide Space separated Coins VALUE : \n";
     for(int i=0;i<n;i++){
         cin>>coins[i];
     }
+
     int dp[target+1];
     for(int i=0;i<=target;i++){
         dp[i]=INT_MAX;
@@ -27,7 +35,11 @@ int main(){
             }            
         }
     }
-   
+    for(int i=0;i<=target;i++){
+        cout<<dp[i]<<" ";  
+    }
+    //cout<<"\n";
+    cout<<"\n";
     if(dp[target]==INT_MAX){
         cout<<"NOT POSSIBLE\n";
     }

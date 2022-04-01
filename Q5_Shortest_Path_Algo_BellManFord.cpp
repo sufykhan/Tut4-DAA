@@ -1,7 +1,8 @@
-// A C++ program for Bellman-Ford's single source
-// shortest path algorithm.
 #include <bits/stdc++.h>
 using namespace std;
+
+// BELLMAN_FORD ALGORITHM
+
 
 // The main function that finds shortest
 // distances from src to all other vertices

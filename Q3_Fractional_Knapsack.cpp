@@ -12,13 +12,23 @@ using namespace std;
 
 
 int main(){
-    int n,capacity;cin>>n>>capacity;
+    int n,capacity;
+    cout<<"Enter the value of n (Total number of weights):\n";
+    cin>>n;
+    cout<<"Enter the capacity of the Knapsack:\n ";
+    cin>>capacity;
     
     vector<int>weight(n);
     vector<int>value(n);
+    
+    cout<<"Enter the space separated weight array\n";
+
     for(int i=0;i<n;i++){
         cin>>weight[i];
     }
+
+    cout<<"Enter the space separated value array for above weights in same sequence\n";
+
     for(int i=0;i<n;i++){
         cin>>value[i];
     }

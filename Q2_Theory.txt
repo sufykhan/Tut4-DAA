@@ -1,0 +1,103 @@
+Q2:Solve the coin exchange problem for value V=23 and coin set coin = [10, 6, 5, 1] using the
+algorithm developed in Q.1 and show all necessary intermediate steps.
+
+**Greedy**
+
+In greedy method we first sort the coin array in the decreasing order of their values.
+Then we start with the largest coin and try to make the change for the value V.
+
+V=23 We take 10 as the largest coin and we have to make the change for 13.
+V=13 We take 10 as the largest coin and we have to make the change for 3.
+V=3 We take 10 as the largest coin but its greater than V so skipping this item.
+V=3 We take 6 as the largest coin but its greater than V so skipping this item.
+V=3 We take 5 as the largest coin but its greater than V so skipping this item.
+V=3 We take 1 as the largest coin and we have to make the change for 2.
+V=2 We take 1 as the largest coin and we have to make the change for 1.
+V=1 We take 1 as the largest coin and we have to make the change for 0.
+
+V=0  and hence we got the answer as {10,10,1,1,1} ;
+
+**Dynamic Programming**
+
+Well, we could use an array. Suppose that we have this array of numbers, that will hold the minimum number of coins for each amount, starting from 0 to the amount, which in this case is 11:
+
+Each value in the array represents the minimum number of coins for each amount
+Now the question we face is, what values do we initialize each index with?
+Well, since we’re dealing with minimums, values are often initialized to Infinity (∞).
+The logic is that at this moment, the minimum number of coins to make each amount is infinite:
+But, there’s one important thing to note. Assuming that we’re only given positive value coins, 
+we know that it is impossible to make an amount of 0 using any of the coins.
+So, we can say that there are 0 ways of making 0:
+
+There are 0 ways to make an amount of 0 with positive coin values
+
+We are not taking V=23 and coin set coin = [10, 6, 5, 1] as it is very larger input value and
+is infeasible to explain , so lets look at the below example. After the explanation we can see there
+dp table of V=23 and coin set coin = [10, 6, 5, 1] to understand the algo. 
+
+//**** Example: Amount to make =4 , coins given =[1,2] ****//
+
+Okay, now let’s look at each coin separately to see how many of a specific coin can make each amount.
+Since our first coin is the 1-coin, we’re going to ask: 
+“Using just 1-coins, how many coins does it take to make a value of amount: 1? 2? … 4?”
+
+First, let’s ask: “From 0, how many 1-coins do I need to make 1?”
+Well, that’s simply 1.
+0 + 1 = 1
+Now, we ask: “Okay now, which is smaller? 1 or ∞ ?”
+It’s 1.
+
+
+The 1 in the min() represents an additional coin, NOT a 1-coin
+What we’re basically doing is we’re looking at how many coins it takes to make amount 0 and 
+then using that amount to make 1. Another way of thinking about it is if we imagined having 
+a pile of coins that make up 0 and then adding another coin to make 1.
+Then, we determine if the new pile uses up less coins than the current current. Since 1 < ∞, 
+we replace ∞ with 1.
+We repeat this process with 2, 3, … ,4:
+
+Here, we’re saying that we already know that it takes one 1-coin to make the amount 1.
+In order to make amount 2, we just put a 1-coin on top of the pile that makes up amount 1 
+and determine if that new pile is less than ∞. If so, we replace ∞ with the new minimum number of coins.
+
+Okay, before I go to the next step, you’re probably asking: “What about the other coin, 2 ?” We’re getting to them next.
+What I wanted to emphasize is the idea that we’re solving this problem one coin at a time. 
+Using just one coin, we ask ourselves: “Using just this coin, what’s the minimum number of coins that we can use to get this specific amount?”
+Now, let’s look at what happens when use both 1 and 2. 
+We’ve already seen the ways in which using 1-coins will get us a certain amount.
+But now, we’re going to look at whether we can replace some of those 1-coins with 2-coins.
+
+It’s clear that we can’t make the amounts 0 and 1 using a 2-coin. So those values stay the same.
+But what about the amount 2?
+Since we can now use a 2-coin, can’t we just use that coin instead of using two 1-coins?
+As a matter of fact, isn’t this just the same as having an amount of 0 and then adding a 2-coin to make the amount 2?:
+0 + 2 = 2 (using one 2-coin)
+
+Now, that we can use 2-coins, we can ask how we can make 3 using both coins 1 and 2. Well, we already know how to make 3 using just 1-coins. But, what about 1-coins and 2-coins? Well, we can:
+1 + 2 = 3
+Or simply put, from the amount 1, we can put a 2-coin on top of it to make 3:
+
+Now, this is where it gets interesting and I think you might start to see the pattern emerge.
+In order to create the amount 4 using 1-coins and 2-coins, we can see:
+1 + 1 + 1 + 1 = 4 (only 1s)
+1 + 1 + 2 = 4 (both 1 and 2)
+2 + 2 = 4 (all 2s)
+As we can see, that using only two 2-coins will give us the minimum number of coins it takes to make the amount 4. Or another way to put it, from the amount 2, we can add a 2-coin to make 4:
+
+And at last, we’ve exhausted all our coin options and see that at amount 4, there is a minimum value of 2 coins (2 + 2 ) that are required to make 4.
+
+
+DP table for V=23 and coin set coin = [10, 6, 5, 1];
+
+Approach  : if (dp[i-coins[j]] != INT_MAX && dp[i-coins[j]]+1 <dp[i]) dp[i] = dp[i-coins[j]] + 1;
+
+0 1 2 3 4 1 1 2 3 4 1 2 2 3 4 2 2 3 3 4 2 3 3 4 
+
+dp[0]=0;          0 coins used to get 0;
+dp[1]=1;          1 coins used to get 1 that is 1;
+dp[2]=2;          2 coins used to get 2 that is 1+1;
+dp[3]=3;          3 coins used to get 3 that is 1+1+1;
+.
+.
+.
+dp[23]=4;         4 coins used to get 23 that is 10+6+6+1;

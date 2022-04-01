@@ -1,0 +1,34 @@
+Q6. What are the major differences/ similarities between Greedy and DP? Make a comparison table. 
+
+Ans - 
+
+Greedy --> (1)
+DP --> (2)
+
+**Differences**
+
+(1) In this method, we take the solution which gives the best answer at the spur of the moment and assume that it gives the overall correct answer.
+(2) There are subproblems to the problem and we solve them step by step by using subproblems and get the final answer.
+
+(1) It may not give the optimal solution.
+(2) It always gives the optimal solution.
+
+(1) Memory requirement is quite less and we don’t reuse the values calculated once.
+(2) Memoization is used which may take up a lot of memory.
+
+(1) It gives a faster solution mostly.
+(2) It is a bit slow in comparison to the Greedy.
+
+(1) Example - Indian currency coin exchange.
+(2) Example - Coin change using any coin denominations.
+
+
+**Similarities**
+
+(1,2) Divide and conquer technique used in DP as well as Greedy techniques.
+(1,2) Both give optimization.
+(1,2) The problem that is solved by these methods should have optimal substructure and overlapping subproblems.
+(1,2) There are various problems that may be solved using both techniques.
+
+
+

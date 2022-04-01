@@ -1,6 +1,9 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
-#include <limits.h>
+
+//DIJKTRA ALGORITHM
+
+//ONE OF THE SHORTCOMING IS THAT IT WONT WORK FOR NEGATIVE EDGES UNLIKE BELLMAN FORD ALGORITHM
 
 #define V 9
 
@@ -47,7 +50,8 @@ void dijkstra(int graph[V][V], int src)
 int main()
 {
 
-	/* Let us create the example graph discussed above */
+	//SAMPLE GRAPH WHERE EACH VALUE GRAPH[I][J] REPRESENTS WEIGHT OF EDGE FROM I TO J;
+	
 	int graph[V][V] = { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
 						{ 4, 0, 8, 0, 0, 0, 0, 11, 0 },
 						{ 0, 8, 0, 7, 0, 4, 0, 0, 2 },
